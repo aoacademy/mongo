@@ -1,0 +1,10 @@
+version: '3'
+services:
+	mongocfg1:
+		container_name: mongocfg1
+    image: mongo
+    command: mongod --configsvr --dbpath /data/db --replSet cfgrepl --port 27017
+    expose:
+			- "27017"
+    volumes:
+      - $CWD/mongocfg1:/data/db
