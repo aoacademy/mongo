@@ -4,12 +4,12 @@ services:
   mongocfg1:
     container_name: mongocfg1
     image: mongo
-    command: mongod --configsvr --dbpath /data/db --replSet cfgrepl --port 27017
+    command: mongod --configsvr --dbpath /data/db --replSet cfgrepl --port 27017 --bind_ip 127.0.0.1,mongocfg1
     expose:
       - "27017"
     volumes:
-      - $CWD/mongocfg1:/data/db
-      - $CWD/script/mongocfg.js:/docker-entrypoint-initdb.d/configure-node-id.js
+      - ./mongocfg1:/data/db
+      - ./scripts/mongocfg.js:/docker-entrypoint-initdb.d/rs.js
 
   mongos1:
     container_name: mongos1
