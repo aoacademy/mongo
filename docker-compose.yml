@@ -9,6 +9,7 @@ services:
       - "27017"
     volumes:
       - $CWD/mongocfg1:/data/db
+      - $CWD/script/mongocfg.js:/docker-entrypoint-initdb.d/configure-node-id.js
 
   mongos1:
     container_name: mongos1
