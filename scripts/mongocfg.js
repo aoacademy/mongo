@@ -12,7 +12,7 @@ rs.initiate(
     _id: "cfgrepl",
     configsvr: true,
     members: [
-      { _id : 0, host : "mongocfg1:27017" },
+      { _id : 0, host : "mongocfg1:27017" }
     ]
   }
 )
