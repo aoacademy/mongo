@@ -1,21 +1,32 @@
 version: '3'
 
 services:
-  mongocfg1:
+  mongod1:
     image: mongo
-    command: mongod --configsvr --dbpath /data/db --replSet cfgrepl --port 27017 --bind_ip 127.0.0.1,mongocfg1
-    expose:
-      - "27017"
-    volumes:
-      # - ./mongocfg1:/data/db
-      - ./scripts/mongocfg.js:/docker-entrypoint-initdb.d/rs.js
-
-  mongos1:
-    depends_on:
-      - mongocfg1
-    image: mongo
-    command: mongos --configdb cfgrepl/mongocfg1:27017 --port 27017
+    command: mongod --replSet shamin
     ports:
       - "27017:27017"
-    expose:
-      - "27017"
+  mongod2:
+    image: mongo
+    command: mongod --replSet shamin
+    ports:
+      - "27018:27017"
+  mongod3:
+    image: mongo
+    command: mongod --replSet shamin
+    ports:
+      - "27019:27017"
+  mongo-config:
+    image: mongo
+    depends_on:
+      - mongod1
+      - mongod2
+      - mongod3
+    volumes:
+      - ./scripts:/scripts
+    environment:
+      - MONGO1=mongod1
+      - MONGO2=mongod2
+      - MONGO3=mongod3
+      - RS=shamin
+    entrypoint: [ "/scripts/setup.sh" ]
