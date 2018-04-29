@@ -67,5 +67,7 @@ func TestFind(t *testing.T) {
 
 		t.Log(elem)
 	}
-	cur.Close(context.Background())
+	if err := cur.Close(context.Background()); err != nil {
+		t.Fatal(err)
+	}
 }
