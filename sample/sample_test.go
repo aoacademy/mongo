@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/mongodb/mongo-go-driver/bson"
 	mgo "github.com/mongodb/mongo-go-driver/mongo"
 )
 
@@ -47,4 +48,24 @@ func TestInsert(t *testing.T) {
 	if _, err := testDB.Collection("nice").InsertOne(context.Background(), s); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestFind(t *testing.T) {
+	cur, err := testDB.Collection("nice").Find(context.Background(), bson.NewDocument(
+		bson.EC.String("name", "parham"),
+	))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for cur.Next(context.Background()) {
+		elem := bson.NewDocument()
+
+		if err := cur.Decode(elem); err != nil {
+			t.Fatal(err)
+		}
+
+		t.Log(elem)
+	}
+	cur.Close(context.Background())
 }
