@@ -3,17 +3,17 @@ version: '3'
 services:
   mongod1:
     image: mongo
-    command: mongod --replSet shamin --oplogSize 16 --nojournal --smallfiles
+    command: mongod --replSet shamin --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
     ports:
       - "27017:27017"
   mongod2:
     image: mongo
-    command: mongod --replSet shamin --oplogSize 16 --nojournal --smallfiles
+    command: mongod --replSet shamin --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
     ports:
       - "27018:27017"
   mongod3:
     image: mongo
-    command: mongod --replSet shamin --oplogSize 16 --nojournal --smallfiles
+    command: mongod --replSet shamin --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
     ports:
       - "27019:27017"
   mongo-config:
