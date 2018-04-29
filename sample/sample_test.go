@@ -52,7 +52,7 @@ func TestInsert(t *testing.T) {
 
 func TestFind(t *testing.T) {
 	cur, err := testDB.Collection("nice").Find(context.Background(), bson.NewDocument(
-		bson.EC.String("name", "parham"),
+		bson.EC.String("name", "Parham"),
 	))
 	if err != nil {
 		t.Fatal(err)
