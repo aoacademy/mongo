@@ -25,7 +25,7 @@ before_install:
 
 install:
   - dep ensure
-  - docker-compose up
+  - docker-compose up -d
 
 script:
   - go vet -v $PKGS                   # go vet is the official Go static analyzer
