@@ -31,6 +31,8 @@ func setupDB() {
 }
 
 func TestInsert(t *testing.T) {
+	setupDB()
+
 	s := struct {
 		Name   string
 		Family string
