@@ -27,47 +27,52 @@ func setupDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if err := client.Connect(context.Background()); err != nil {
+		log.Fatalf("DB connection error: %s", err)
+	}
 
 	testDB = client.Database("test")
 }
 
-func TestInsert(t *testing.T) {
+func TestMain(t *testing.T) {
 	setupDB()
 
-	s := struct {
-		Name   string
-		Family string
-		Time   time.Time
-	}{
-		Name:   "Parham",
-		Family: "Alvani",
-		Time:   time.Now(),
-	}
-	t.Log(s)
+	t.Run("TestInsert", func(t *testing.T) {
+		s := struct {
+			Name   string
+			Family string
+			Time   time.Time
+		}{
+			Name:   "Parham",
+			Family: "Alvani",
+			Time:   time.Now(),
+		}
+		t.Log(s)
 
-	if _, err := testDB.Collection("nice").InsertOne(context.Background(), s); err != nil {
-		t.Fatal(err)
-	}
-}
+		if _, err := testDB.Collection("nice").InsertOne(context.Background(), s); err != nil {
+			t.Fatal(err)
+		}
+	})
 
-func TestFind(t *testing.T) {
-	cur, err := testDB.Collection("nice").Find(context.Background(), bson.NewDocument(
-		bson.EC.String("name", "Parham"),
-	))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	for cur.Next(context.Background()) {
-		elem := bson.NewDocument()
-
-		if err := cur.Decode(elem); err != nil {
+	t.Run("TestFind", func(t *testing.T) {
+		cur, err := testDB.Collection("nice").Find(context.Background(), bson.NewDocument(
+			bson.EC.String("name", "Parham"),
+		))
+		if err != nil {
 			t.Fatal(err)
 		}
 
-		t.Log(elem)
-	}
-	if err := cur.Close(context.Background()); err != nil {
-		t.Fatal(err)
-	}
+		for cur.Next(context.Background()) {
+			elem := bson.NewDocument()
+
+			if err := cur.Decode(elem); err != nil {
+				t.Fatal(err)
+			}
+
+			t.Log(elem)
+		}
+		if err := cur.Close(context.Background()); err != nil {
+			t.Fatal(err)
+		}
+	})
 }
