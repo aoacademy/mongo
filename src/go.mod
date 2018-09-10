@@ -1,4 +1,4 @@
-module github.com/mongo
+module github.com/I1820/mongo
 
 require (
 	github.com/buger/jsonparser v0.0.0-20180808090653-f4dd9f5a6b44 // indirect
