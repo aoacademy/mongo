@@ -10,7 +10,6 @@ env:
 
 before_install:
   # Setup some env variables
-  - GO_FILES=$(find . -iname '*.go' )  # All the .go files
   - PKGS=$(go list ./... )             # All the import paths
 
   # Install linters
