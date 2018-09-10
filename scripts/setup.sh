@@ -7,9 +7,9 @@
 #
 # [] Created By : Parham Alvani (parham.alvani@gmail.com)
 # =======================================
-mongodb1=`getent hosts ${MONGO1} | awk '{ print $1 }'`
-mongodb2=`getent hosts ${MONGO2} | awk '{ print $1 }'`
-mongodb3=`getent hosts ${MONGO3} | awk '{ print $1 }'`
+mongodb1=$(getent hosts ${MONGO1} | awk '{ print $1 }')
+mongodb2=$(getent hosts ${MONGO2} | awk '{ print $1 }')
+mongodb3=$(getent hosts ${MONGO3} | awk '{ print $1 }')
 
 port=${PORT:-27017}
 
@@ -21,7 +21,7 @@ done
 
 echo "Started.."
 
-echo setup.sh time now: `date +"%T" `
+echo "setup.sh; time now: $(date +"%T")"
 mongo --host ${mongodb1}:${port} <<EOF
    var cfg = {
         "_id": "${RS}",
