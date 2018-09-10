@@ -8,7 +8,7 @@
  * +===============================================
  */
 
-package mongo
+package sample
 
 import (
 	"context"
