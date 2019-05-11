@@ -1,12 +1,3 @@
-#!/bin/bash
-# In The Name Of God
-# ========================================
-# [] File Name : $file.name
-#
-# [] Creation Date : $time.strftime("%d-%m-%Y")
-#
-# [] Created By : Parham Alvani (parham.alvani@gmail.com)
-# =======================================
 mongodb1=$(getent hosts ${MONGO1} | awk '{ print $1 }')
 mongodb2=$(getent hosts ${MONGO2} | awk '{ print $1 }')
 mongodb3=$(getent hosts ${MONGO3} | awk '{ print $1 }')
