@@ -1,5 +1,5 @@
 # mongo
-[![CircleCI](https://circleci.com/gh/I1820/mongo.svg?style=svg)](https://circleci.com/gh/I1820/mongo)
+[![CircleCI](https://circleci.com/gh/aoacademy/LetsGo.svg?style=svg)](https://circleci.com/gh/aoacademy/LetsGo)
 
 ## Introduction
 Do you need multiple copies of your data? Let's do replication with mongo style.
