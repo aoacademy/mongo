@@ -11,8 +11,13 @@ jobs:
   test:
     docker:
       - image: circleci/golang:latest
+    environment:
+      RS: elahe
     steps:
       - checkout
+      - run:
+          name: Install mongodb client
+          command: sudo apt install -y mongodb-clients || true
       - run:
           name: Install Docker Compose
           command: |
@@ -21,24 +26,8 @@ jobs:
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
       - run: docker-compose up -d
+      - run: ./scripts/setup.sh
       - run: go test ./...
-
-  coverage:
-    docker:
-      - image: circleci/golang:latest
-    steps:
-      - checkout
-      - run:
-          name: "Create a temp directory for artifacts"
-          command: |
-            mkdir -p /tmp/artifacts
-      - run:
-          command: |
-            go test -coverprofile=c.out
-            go tool cover -html=c.out -o coverage.html
-            mv coverage.html /tmp/artifacts
-      - store_artifacts:
-          path: /tmp/artifacts
 
 workflows:
   version: 2
