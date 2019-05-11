@@ -18,18 +18,3 @@ services:
     command: mongod --replSet ${RS} --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
     ports:
       - "27019:27017"
-
-  mongo-config:
-    image: mongo
-    depends_on:
-      - mongod1
-      - mongod2
-      - mongod3
-    volumes:
-      - ./scripts:/scripts
-    environment:
-      - MONGO1=mongod1
-      - MONGO2=mongod2
-      - MONGO3=mongod3
-      - RS=${RS}
-    entrypoint: [ "/scripts/setup.sh" ]
