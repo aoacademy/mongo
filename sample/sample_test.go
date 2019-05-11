@@ -38,7 +38,8 @@ func (suite *TestSuite) SetupSuite() {
 	))
 	suite.NoError(err)
 
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	suite.NoError(client.Connect(ctx))
 
 	suite.db = client.Database("test")
