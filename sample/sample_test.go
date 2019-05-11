@@ -12,6 +12,8 @@ package sample
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -34,7 +36,7 @@ type TestSuite struct {
 
 func (suite *TestSuite) SetupSuite() {
 	client, err := mongo.NewClient(options.Client().ApplyURI(
-		"mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019/?replicaSet=shamin",
+		fmt.Sprintf("mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019/?replicaSet=%s", os.Getenv("RS")),
 	))
 	suite.NoError(err)
 
