@@ -1,12 +1,5 @@
 iversion: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/golang:latest
-    steps:
-      - checkout
-      - run: go build
-
   lint:
     docker:
       - image: golangci/golangci-lint:latest
@@ -49,8 +42,7 @@ jobs:
 
 workflows:
   version: 2
-  build-test-lint:
+  test-lint:
     jobs:
-      - build
       - lint
       - test
