@@ -12,67 +12,76 @@ package sample
 
 import (
 	"context"
-	"log"
 	"testing"
 	"time"
 
-	"github.com/mongodb/mongo-go-driver/bson"
-	mgo "github.com/mongodb/mongo-go-driver/mongo"
+	"github.com/stretchr/testify/suite"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var testDB *mgo.Database
+type Record struct {
+	Name   string
+	Family string
+	Time   time.Time
+}
 
-func setupDB() {
-	client, err := mgo.NewClient("mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019/?replicaSet=shamin")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := client.Connect(context.Background()); err != nil {
-		log.Fatalf("DB connection error: %s", err)
-	}
+type TestSuite struct {
+	suite.Suite
+	db *mongo.Database
+}
 
-	testDB = client.Database("test")
+func (suite *TestSuite) SetupSuite() {
+	client, err := mongo.NewClient(options.Client().ApplyURI(
+		"mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019/?replicaSet=shamin",
+	))
+	suite.NoError(err)
+
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	suite.NoError(client.Connect(ctx))
+
+	suite.db = client.Database("test")
 }
 
 func TestMain(t *testing.T) {
-	setupDB()
+	suite.Run(t, new(TestSuite))
+}
 
-	t.Run("TestInsert", func(t *testing.T) {
-		s := struct {
-			Name   string
-			Family string
-			Time   time.Time
-		}{
-			Name:   "Parham",
-			Family: "Alvani",
-			Time:   time.Now(),
-		}
-		t.Log(s)
+func (suite *TestSuite) TestInsert() {
+	s := Record{
+		Name:   "Parham",
+		Family: "Alvani",
+		Time:   time.Now(),
+	}
 
-		if _, err := testDB.Collection("nice").InsertOne(context.Background(), s); err != nil {
-			t.Fatal(err)
-		}
+	_, err := suite.db.Collection("nice").InsertOne(context.Background(), s)
+	suite.NoError(err)
+}
+
+func (suite *TestSuite) TestFind() {
+	s := Record{
+		Name:   "Parham",
+		Family: "Alvani",
+		Time:   time.Now(),
+	}
+
+	_, err := suite.db.Collection("nice").InsertOne(context.Background(), s)
+	suite.NoError(err)
+
+	// Fetches the inserted data
+
+	cur, err := suite.db.Collection("nice").Find(context.Background(), bson.M{
+		"name": "Parham",
 	})
+	suite.NoError(err)
 
-	t.Run("TestFind", func(t *testing.T) {
-		cur, err := testDB.Collection("nice").Find(context.Background(), bson.NewDocument(
-			bson.EC.String("name", "Parham"),
-		))
-		if err != nil {
-			t.Fatal(err)
-		}
+	for cur.Next(context.Background()) {
+		var r Record
 
-		for cur.Next(context.Background()) {
-			elem := bson.NewDocument()
+		suite.NoError(cur.Decode(&r))
 
-			if err := cur.Decode(elem); err != nil {
-				t.Fatal(err)
-			}
-
-			t.Log(elem)
-		}
-		if err := cur.Close(context.Background()); err != nil {
-			t.Fatal(err)
-		}
-	})
+		suite.T().Log(r)
+	}
+	suite.NoError(cur.Close(context.Background()))
 }
