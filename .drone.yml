@@ -1,0 +1,20 @@
+kind: pipeline
+name: default
+
+steps:
+- name: mongo_cluster
+  image: compose:latest
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+  commands:
+    - up -f /drone/src/docker-compose.yaml
+- name: test
+  image: golang
+  commands:
+    - go test -v ./sample
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
