@@ -1,5 +1,5 @@
 # mongo
-[![CircleCI](https://circleci.com/gh/aoacademy/mongo.svg?style=svg)](https://circleci.com/gh/aoacademy/mongo)
+[![Drone (cloud)](https://img.shields.io/drone/build/aoacademy/mongo.svg?style=flat-square)](https://cloud.drone.io/aoacademy/mongo)
 
 ## Introduction
 Do you need multiple copies of your data? Let's do replication with mongo style.
