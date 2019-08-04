@@ -2,19 +2,15 @@ kind: pipeline
 name: default
 
 steps:
-- name: mongo_cluster
-  image: compose:latest
-  volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock
-  commands:
-    - up -f /drone/src/docker-compose.yaml
-- name: test
-  image: golang
-  commands:
-    - go test -v ./sample
+  - name: replication_init
+    image: mongo:latest
+    commands:
+      - mongo --host m1 .ci/rs.js
 
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
+services:
+  - name: m1
+    image: mongo:latest
+  - name: m2
+    image: mongo:latest
+  - name: m3
+    image: mongo:latest
