@@ -1,4 +1,7 @@
 #!/bin/bash
+# it is better to first use rs.initiate() then add replicas with rs.add()
+# but using rs.initiate() without configuration makes replica set to initiate
+# master with its hostname that makes everything difficult here.
 
 mongodb1=$(getent hosts ${MONGO1} | awk '{ print $1 }')
 mongodb2=$(getent hosts ${MONGO2} | awk '{ print $1 }')
