@@ -10,7 +10,13 @@ steps:
 services:
   - name: m1
     image: mongo:latest
+    command:
+      - --replSet drone
   - name: m2
     image: mongo:latest
+    command:
+      - --replSet drone
   - name: m3
     image: mongo:latest
+    command:
+      - --replSet drone
