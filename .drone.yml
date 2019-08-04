@@ -12,11 +12,14 @@ services:
     image: mongo:latest
     command:
       - --replSet drone
+      - --bind_ip 0.0.0.0
   - name: m2
     image: mongo:latest
     command:
       - --replSet drone
+      - --bind_ip 0.0.0.0
   - name: m3
     image: mongo:latest
     command:
       - --replSet drone
+      - --bind_ip 0.0.0.0
