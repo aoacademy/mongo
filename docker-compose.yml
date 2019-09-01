@@ -1,21 +1,22 @@
-version: '3'
+---
+version: '3.1'
 
 services:
   mongod1:
     image: mongo
-    command: mongod --replSet ${RS} --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
+    command: mongod --replSet ${RS}
     ports:
       - "27017:27017"
 
   mongod2:
     image: mongo
-    command: mongod --replSet ${RS} --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
+    command: mongod --replSet ${RS}
     ports:
       - "27018:27017"
 
   mongod3:
     image: mongo
-    command: mongod --replSet ${RS} --oplogSize 16 --smallfiles --noprealloc --bind_ip 0.0.0.0
+    command: mongod --replSet ${RS}
     ports:
       - "27019:27017"
 
@@ -32,4 +33,4 @@ services:
       - MONGO2=mongod2
       - MONGO3=mongod3
       - RS=${RS}
-    entrypoint: [ "/scripts/setup.sh" ]
+    entrypoint: ["/scripts/setup.sh"]
